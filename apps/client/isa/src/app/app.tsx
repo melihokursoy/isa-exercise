@@ -34,7 +34,7 @@ export function App() {
     createIsa({ createIsaInput: { savings: amount, isaOptionId: optionId } });
   };
 
-  if (myIsa) {
+  if (auth && myIsa) {
     return (
       <StyledApp>
         <Welcome title="ISA" />
@@ -55,6 +55,7 @@ export function App() {
   return (
     <StyledApp>
       <Welcome title="ISA" />
+      {auth && !myPension && !myIsa ? 
       <div style={{ display: 'flex' }}>
         <div>
           <Input
@@ -82,7 +83,7 @@ export function App() {
             ></Card>
           );
         })}
-      </div>
+      </div> : null }
     </StyledApp>
   );
 }

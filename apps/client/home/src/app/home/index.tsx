@@ -1,31 +1,25 @@
-'use client'
+'use client';
 import * as React from 'react';
 import { NavLink, Route, Routes } from 'react-router-dom';
-import {
-  Logo,
-  Header,
-  Button,
-  Nav,
-  Welcome,
-} from '@isa-exercise/ui';
+import { Logo, Header, Button, Nav, Welcome } from '@isa-exercise/ui';
 import {
   getMyPensions,
   logout,
   useGlobalSync,
+  whoAmI,
 } from '@isa-exercise/state';
 import { Login } from '../login';
 import { useNavigate } from 'react-router-dom';
-
+import { useEffect } from 'react';
 
 export function Home() {
-
   const Pension = React.lazy(() => import('pension/Module'));
   const Isa = React.lazy(() => import('isa/Module'));
   const navigate = useNavigate();
 
   const links = [{ to: '/', title: 'Home' }];
   const {
-    store: { auth , myPension},
+    store: { auth, myPension },
   } = useGlobalSync();
 
   if (auth) {
@@ -42,9 +36,16 @@ export function Home() {
     });
   };
 
-  React.useEffect(() => {
-    getMyPensions()
+  useEffect(() => {
+    getMyPensions();
+    whoAmI();
   }, []);
+
+  if (!auth) {
+    navigate('/');
+  }
+
+  useEffect(() => {}, [myPension]);
 
   return (
     <React.Suspense fallback={null}>
@@ -61,9 +62,14 @@ export function Home() {
             </Button>
           </div>
         ) : (
-     
-            <Button buttonType="primary" onClick={()=>{navigate('/login')}}>LOG IN</Button>
-
+          <Button
+            buttonType="primary"
+            onClick={() => {
+              navigate('/login');
+            }}
+          >
+            LOG IN
+          </Button>
         )}
       </Header>
       <Routes>
@@ -72,7 +78,7 @@ export function Home() {
         <Route path="/pension" element={<Pension />} />
         <Route path="/isa" element={<Isa />} />
       </Routes>
-    </React.Suspense> 
+    </React.Suspense>
   );
 }
 

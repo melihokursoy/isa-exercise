@@ -18,7 +18,7 @@ export const Login: React.FC<LoginProps> = () => {
 
   const handleLogin = async () => {
     setError(null);
-    login(credentials, ()=>{navigate('/');})
+    login(credentials, ()=>{navigate('/pension');})
   };
 
   return (
