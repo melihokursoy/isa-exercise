@@ -7,6 +7,7 @@ import {
 } from '@isa-exercise/state';
 import { Button, Card, Input, Welcome } from '@isa-exercise/ui';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 const StyledApp = styled.div`
@@ -15,6 +16,8 @@ const StyledApp = styled.div`
 
 export function App() {
   const [amount, setAmount] = useState<number>(0);
+
+  const navigate = useNavigate();
 
   const {
     store: { auth, myPension, isaOptions, myIsa },
@@ -38,7 +41,6 @@ export function App() {
     navigate('/');
   }
 
-
   if (auth && myIsa) {
     return (
       <StyledApp>
@@ -60,35 +62,36 @@ export function App() {
   return (
     <StyledApp>
       <Welcome title="ISA" />
-      {auth && !myPension && !myIsa ? 
-      <div style={{ display: 'flex' }}>
-        <div>
-          <Input
-            label="Total Amount"
-            name="amount"
-            type="number"
-            onChange={handleChange}
-          />
-        </div>
+      {auth && !myPension && !myIsa ? (
+        <div style={{ display: 'flex' }}>
+          <div>
+            <Input
+              label="Total Amount"
+              name="amount"
+              type="number"
+              onChange={handleChange}
+            />
+          </div>
 
-        {(isaOptions || []).map((isaOption) => {
-          return (
-            <Card
-              title={isaOption.name}
-              footer={
-                <Button
-                  onClick={() => {
-                    handleSave(isaOption.id);
-                  }}
-                  buttonType="primary"
-                >
-                  Save
-                </Button>
-              }
-            ></Card>
-          );
-        })}
-      </div> : null }
+          {(isaOptions || []).map((isaOption) => {
+            return (
+              <Card
+                title={isaOption.name}
+                footer={
+                  <Button
+                    onClick={() => {
+                      handleSave(isaOption.id);
+                    }}
+                    buttonType="primary"
+                  >
+                    Save
+                  </Button>
+                }
+              ></Card>
+            );
+          })}
+        </div>
+      ) : null}
     </StyledApp>
   );
 }
