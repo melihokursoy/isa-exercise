@@ -1,0 +1,41 @@
+import styled from 'styled-components';
+import { Layout } from '../layout';
+
+/* eslint-disable-next-line */
+export interface WelcomeProps {
+  title?: string;
+}
+
+const StyledWelcome = styled.div`
+  background-image: url("data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIGlkPSJMYXllcl8xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB4PSIwcHgiIHk9IjBweCIKCSB2aWV3Qm94PSIwIDAgMTE3NyAyMDMiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDExNzcgMjAzOyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+CjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+Cgkuc3Qwe2NsaXAtcGF0aDp1cmwoI1NWR0lEXzJfKTtmaWxsOiNGRjNBOTY7fQoJLnN0MXtvcGFjaXR5OjAuMTU7Y2xpcC1wYXRoOnVybCgjU1ZHSURfNF8pO2ZpbGw6I0ZGRkZGRjtlbmFibGUtYmFja2dyb3VuZDpuZXcgICAgO30KCS5zdDJ7b3BhY2l0eTowLjM7Y2xpcC1wYXRoOnVybCgjU1ZHSURfNl8pO2ZpbGw6I0ZGRkZGRjtlbmFibGUtYmFja2dyb3VuZDpuZXcgICAgO30KCS5zdDN7b3BhY2l0eTowLjE7Y2xpcC1wYXRoOnVybCgjU1ZHSURfOF8pO2ZpbGw6I0ZGRkZGRjtlbmFibGUtYmFja2dyb3VuZDpuZXcgICAgO30KPC9zdHlsZT4KPGc+Cgk8Zz4KCQk8ZGVmcz4KCQkJPHJlY3QgaWQ9IlNWR0lEXzFfIiB3aWR0aD0iMTE3NyIgaGVpZ2h0PSIyMDMiLz4KCQk8L2RlZnM+CgkJPGNsaXBQYXRoIGlkPSJTVkdJRF8yXyI+CgkJCTx1c2UgeGxpbms6aHJlZj0iI1NWR0lEXzFfIiAgc3R5bGU9Im92ZXJmbG93OnZpc2libGU7Ii8+CgkJPC9jbGlwUGF0aD4KCQk8cmVjdCBjbGFzcz0ic3QwIiB3aWR0aD0iMTE3NyIgaGVpZ2h0PSIyMDMiLz4KCTwvZz4KCTxnPgoJCTxkZWZzPgoJCQk8cmVjdCBpZD0iU1ZHSURfM18iIHdpZHRoPSIxMTc3IiBoZWlnaHQ9IjIwMyIvPgoJCTwvZGVmcz4KCQk8Y2xpcFBhdGggaWQ9IlNWR0lEXzRfIj4KCQkJPHVzZSB4bGluazpocmVmPSIjU1ZHSURfM18iICBzdHlsZT0ib3ZlcmZsb3c6dmlzaWJsZTsiLz4KCQk8L2NsaXBQYXRoPgoJCTxwYXRoIGNsYXNzPSJzdDEiIGQ9Ik04NzUuOSw2MS4xYy04MC4zLDAtMTc1LjcsMzYuMi0xNzAuMywxMDguNmM0LjYsNjIsNjguNSwxMTguNSwxMzEuOSwxMTguNWMxNS4xLDAsMzAuMi0zLjIsNDQuNS0xMC40CgkJCWM3NC0zNywyMDcuOC0yMDQuOSw4LjUtMjE2LjNDODg1LjcsNjEuMyw4ODAuOCw2MS4xLDg3NS45LDYxLjEiLz4KCTwvZz4KCTxnPgoJCTxkZWZzPgoJCQk8cmVjdCBpZD0iU1ZHSURfNV8iIHdpZHRoPSIxMTc3IiBoZWlnaHQ9IjIwMyIvPgoJCTwvZGVmcz4KCQk8Y2xpcFBhdGggaWQ9IlNWR0lEXzZfIj4KCQkJPHVzZSB4bGluazpocmVmPSIjU1ZHSURfNV8iICBzdHlsZT0ib3ZlcmZsb3c6dmlzaWJsZTsiLz4KCQk8L2NsaXBQYXRoPgoJCTxwYXRoIGNsYXNzPSJzdDIiIGQ9Ik05MzQuOS0xMy41Yy00Mi42LDAtOTMuMiwxOS4yLTkwLjQsNTcuNmMyLjQsMzIuOSwzNi40LDYyLjksNzAsNjIuOWM4LDAsMTYuMS0xLjcsMjMuNi01LjUKCQkJYzM5LjMtMTkuNiwxMTAuMy0xMDguNyw0LjUtMTE0LjhDOTQwLjEtMTMuNCw5MzcuNS0xMy41LDkzNC45LTEzLjUiLz4KCTwvZz4KCTxnPgoJCTxkZWZzPgoJCQk8cmVjdCBpZD0iU1ZHSURfN18iIHdpZHRoPSIxMTc3IiBoZWlnaHQ9IjIwMyIvPgoJCTwvZGVmcz4KCQk8Y2xpcFBhdGggaWQ9IlNWR0lEXzhfIj4KCQkJPHVzZSB4bGluazpocmVmPSIjU1ZHSURfN18iICBzdHlsZT0ib3ZlcmZsb3c6dmlzaWJsZTsiLz4KCQk8L2NsaXBQYXRoPgoJCTxwYXRoIGNsYXNzPSJzdDMiIGQ9Ik0xMjM4LjEtMTAxLjhjLTE3MC41LDAtMzcyLjksNzYuOC0zNjEuNSwyMzAuNGM5LjgsMTMxLjYsMTQ1LjQsMjUxLjUsMjgwLDI1MS41YzMyLjEsMCw2NC4yLTYuOCw5NC40LTIyCgkJCWMxNTctNzguNSw0NDAuOS00MzQuOCwxOC4xLTQ1OUMxMjU5LTEwMS41LDEyNDguNi0xMDEuOCwxMjM4LjEtMTAxLjgiLz4KCTwvZz4KPC9nPgo8L3N2Zz4=");
+  color: #fff;
+  padding: 36px 24px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 100%;
+  min-height: 250px;
+  background-position: 80% 0;
+  & span
+   {
+    disp[lay:block;
+    font-weight:100;
+    font-size: 20px;
+   }
+   & h1
+   {
+    font-weight:300;
+   }
+`;
+
+export function Welcome({ title }: WelcomeProps) {
+  return (
+    <StyledWelcome>
+      <Layout>
+        <span> Hello there, </span>
+        <h1>Welcome {title} 👋</h1>
+      </Layout>
+    </StyledWelcome>
+  );
+}
+
+export default Welcome;

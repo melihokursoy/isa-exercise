@@ -1,0 +1,145 @@
+{
+  "name": "pension",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/client/pension/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "compiler": "babel",
+        "outputPath": "dist/apps/client/pension/browser",
+        "index": "apps/client/pension/src/index.html",
+        "baseHref": "/",
+        "main": "apps/client/pension/src/main.ts",
+        "tsConfig": "apps/client/pension/tsconfig.app.json",
+        "assets": [
+          "apps/client/pension/src/favicon.ico",
+          "apps/client/pension/src/assets"
+        ],
+        "styles": [],
+        "scripts": [],
+        "webpackConfig": "apps/client/pension/webpack.config.ts"
+      },
+      "configurations": {
+        "development": {
+          "extractLicenses": false,
+          "optimization": false,
+          "sourceMap": true,
+          "vendorChunk": true
+        },
+        "production": {
+          "fileReplacements": [
+            {
+              "replace": "apps/client/pension/src/environments/environment.ts",
+              "with": "apps/client/pension/src/environments/environment.prod.ts"
+            }
+          ],
+          "optimization": true,
+          "outputHashing": "all",
+          "sourceMap": false,
+          "namedChunks": false,
+          "extractLicenses": true,
+          "vendorChunk": false,
+          "webpackConfig": "apps/client/pension/webpack.config.prod.ts"
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/webpack:ssr-dev-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "browserTarget": "pension:build:development",
+        "serverTarget": "pension:serve-server:development",
+        "port": 4201,
+        "browserTargetOptions": {
+          "watch": true
+        }
+      },
+      "configurations": {
+        "development": {},
+        "production": {
+          "browserTarget": "pension:build:production",
+          "serverTarget": "pension:serve-server:production"
+        }
+      }
+    },
+    "serve-static": {
+      "dependsOn": ["build", "server"],
+      "executor": "nx:run-commands",
+      "defaultConfiguration": "development",
+      "options": {
+        "command": "PORT=4201 node dist/apps/client/pension/server/server.js"
+      }
+    },
+    "server": {
+      "dependsOn": ["build"],
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "target": "node",
+        "main": "apps/client/pension/server.ts",
+        "outputPath": "dist/apps/client/pension/server",
+        "outputFileName": "server.js",
+        "tsConfig": "apps/client/pension/tsconfig.server.json",
+        "compiler": "babel",
+        "externalDependencies": "all",
+        "outputHashing": "none",
+        "webpackConfig": "apps/client/pension/webpack.server.config.ts"
+      },
+      "configurations": {
+        "development": {
+          "optimization": false,
+          "sourceMap": true
+        },
+        "production": {
+          "fileReplacements": [
+            {
+              "replace": "apps/client/pension/src/environments/environment.ts",
+              "with": "apps/client/pension/src/environments/environment.prod.ts"
+            }
+          ],
+          "sourceMap": false
+        }
+      }
+    },
+    "serve-browser": {
+      "executor": "@nx/react:module-federation-dev-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "pension:build",
+        "hmr": true,
+        "port": 4201
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "pension:build:development"
+        },
+        "production": {
+          "buildTarget": "pension:build:production",
+          "hmr": false
+        }
+      }
+    },
+    "serve-server": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "pension:server:development",
+        "buildTargetOptions": {
+          "watch": true
+        }
+      },
+      "configurations": {
+        "development": {},
+        "production": {
+          "buildTarget": "pension:server:production"
+        }
+      }
+    }
+  }
+}

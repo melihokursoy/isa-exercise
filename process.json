@@ -1,0 +1,39 @@
+{
+  "apps": [
+    {
+      "name": "user-api",
+      "script": "./dist/apps/api/user-api/main.js",
+      "watch": true
+    },
+    {
+      "name": "pension-api",
+      "script": "./dist/apps/api/pension-api/main.js",
+      "watch": true
+    },
+    {
+      "name": "isa-api",
+      "script": "./dist/apps/api/isa-api/main.js",
+      "watch": true
+    },
+    {
+      "name": "api-gateway",
+      "script": "./dist/apps/api/api-gateway/main.js",
+      "watch": true
+    },
+    {
+        "name": "pension",
+        "script": "./dist/apps/client/pension/server/server.js",
+        "watch": true
+      },
+      {
+        "name": "isa",
+        "script": "./dist/apps/client/isa/server/server.js",
+        "watch": true
+      },
+      {
+        "name": "home",
+        "script": "./dist/apps/client/home/server/server.js",
+        "watch": true
+      }
+  ]
+}

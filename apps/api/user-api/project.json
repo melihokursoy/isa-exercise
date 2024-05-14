@@ -1,0 +1,39 @@
+{
+  "name": "user-api",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/api/user-api/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "migrate-dev": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["npx prisma migrate dev --schema=./apps/api/user-api/prisma/schema.prisma"],
+        "parallel": false
+      }
+    },
+    "migrate": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["npx prisma migrate deploy --schema=./apps/api/user-api/prisma/schema.prisma", "ts-node ./apps/api/user-api/prisma/seed.ts"],
+        "parallel": false
+      }
+    },
+    "serve": {
+      "dependsOn": ["migrate"],
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "user-api:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "user-api:build:development"
+        },
+        "production": {
+          "buildTarget": "user-api:build:production"
+        }
+      }
+    }
+  }
+}

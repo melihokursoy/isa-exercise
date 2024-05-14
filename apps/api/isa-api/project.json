@@ -1,0 +1,39 @@
+{
+  "name": "isa-api",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/api/isa-api/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "migrate-dev": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["npx prisma migrate dev --schema=./apps/api/isa-api/prisma/schema.prisma"],
+        "parallel": false
+      }
+    },
+    "migrate": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["npx prisma migrate deploy --schema=./apps/api/isa-api/prisma/schema.prisma", "ts-node ./apps/api/isa-api/prisma/seed.ts"],
+        "parallel": false
+      }
+    },
+    "serve": {
+      "dependsOn": ["migrate"],
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "isa-api:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "isa-api:build:development"
+        },
+        "production": {
+          "buildTarget": "isa-api:build:production"
+        }
+      }
+    }
+  }
+}

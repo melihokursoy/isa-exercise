@@ -1,0 +1,145 @@
+{
+  "name": "isa",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/client/isa/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "compiler": "babel",
+        "outputPath": "dist/apps/client/isa/browser",
+        "index": "apps/client/isa/src/index.html",
+        "baseHref": "/",
+        "main": "apps/client/isa/src/main.ts",
+        "tsConfig": "apps/client/isa/tsconfig.app.json",
+        "assets": [
+          "apps/client/isa/src/favicon.ico",
+          "apps/client/isa/src/assets"
+        ],
+        "styles": [],
+        "scripts": [],
+        "webpackConfig": "apps/client/isa/webpack.config.ts"
+      },
+      "configurations": {
+        "development": {
+          "extractLicenses": false,
+          "optimization": false,
+          "sourceMap": true,
+          "vendorChunk": true
+        },
+        "production": {
+          "fileReplacements": [
+            {
+              "replace": "apps/client/isa/src/environments/environment.ts",
+              "with": "apps/client/isa/src/environments/environment.prod.ts"
+            }
+          ],
+          "optimization": true,
+          "outputHashing": "all",
+          "sourceMap": false,
+          "namedChunks": false,
+          "extractLicenses": true,
+          "vendorChunk": false,
+          "webpackConfig": "apps/client/isa/webpack.config.prod.ts"
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/webpack:ssr-dev-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "browserTarget": "isa:build:development",
+        "serverTarget": "isa:serve-server:development",
+        "port": 4202,
+        "browserTargetOptions": {
+          "watch": true
+        }
+      },
+      "configurations": {
+        "development": {},
+        "production": {
+          "browserTarget": "isa:build:production",
+          "serverTarget": "isa:serve-server:production"
+        }
+      }
+    },
+    "serve-static": {
+      "dependsOn": ["build", "server"],
+      "executor": "nx:run-commands",
+      "defaultConfiguration": "development",
+      "options": {
+        "command": "PORT=4202 node dist/apps/client/isa/server/server.js"
+      }
+    },
+    "server": {
+      "dependsOn": ["build"],
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "target": "node",
+        "main": "apps/client/isa/server.ts",
+        "outputPath": "dist/apps/client/isa/server",
+        "outputFileName": "server.js",
+        "tsConfig": "apps/client/isa/tsconfig.server.json",
+        "compiler": "babel",
+        "externalDependencies": "all",
+        "outputHashing": "none",
+        "webpackConfig": "apps/client/isa/webpack.server.config.ts"
+      },
+      "configurations": {
+        "development": {
+          "optimization": false,
+          "sourceMap": true
+        },
+        "production": {
+          "fileReplacements": [
+            {
+              "replace": "apps/client/isa/src/environments/environment.ts",
+              "with": "apps/client/isa/src/environments/environment.prod.ts"
+            }
+          ],
+          "sourceMap": false
+        }
+      }
+    },
+    "serve-browser": {
+      "executor": "@nx/react:module-federation-dev-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "isa:build",
+        "hmr": true,
+        "port": 4202
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "isa:build:development"
+        },
+        "production": {
+          "buildTarget": "isa:build:production",
+          "hmr": false
+        }
+      }
+    },
+    "serve-server": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "isa:server:development",
+        "buildTargetOptions": {
+          "watch": true
+        }
+      },
+      "configurations": {
+        "development": {},
+        "production": {
+          "buildTarget": "isa:server:production"
+        }
+      }
+    }
+  }
+}

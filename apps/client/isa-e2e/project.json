@@ -1,0 +1,23 @@
+{
+  "name": "isa-e2e",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/client/isa-e2e/src",
+  "tags": [],
+  "implicitDependencies": ["isa"],
+  "targets": {
+    "e2e": {
+      "executor": "@nx/cypress:cypress",
+      "options": {
+        "cypressConfig": "apps/client/isa-e2e/cypress.config.ts",
+        "testingType": "e2e",
+        "devServerTarget": "isa:serve"
+      },
+      "configurations": {
+        "production": {
+          "devServerTarget": "isa:serve:production"
+        }
+      }
+    }
+  }
+}
