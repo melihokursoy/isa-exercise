@@ -1,11 +1,12 @@
-import { gqlClient } from '@isa-exercise/state';
-import { Button, Card, Input, Welcome } from '@isa-exercise/ui';
-import { useMutation, useQuery } from '@tanstack/react-query';
 import {
-  CreateIsaDocument,
-  GetAllIsaOptionsDocument,
-  CreateIsaInput,
-} from 'libs/shared/state/gql/graphql';
+  createIsa,
+  deleteMyIsa,
+  getAllIsaOptions,
+  getMyIsa,
+  useGlobalSync,
+} from '@isa-exercise/state';
+import { Button, Card, Input, Welcome } from '@isa-exercise/ui';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 const StyledApp = styled.div`
@@ -13,42 +14,75 @@ const StyledApp = styled.div`
 `;
 
 export function App() {
-  const { data: isaOptions } = useQuery({
-    queryKey: ['GetMyISA'],
-    queryFn: () => {
-      return gqlClient.request(GetAllIsaOptionsDocument);
-    },
-  });
+  const [amount, setAmount] = useState<number>(0);
 
-  const handleSelect = (optionId: string) => {
-    return gqlClient.request<CreateIsaInput>(CreateIsaDocument, {
-      isaOptionId: 'asd',
-      savings: 123,
-    });
+  const {
+    store: { auth, myPension, isaOptions, myIsa },
+  } = useGlobalSync();
+
+  useEffect(() => {
+    getAllIsaOptions();
+    getMyIsa();
+  }, []);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setAmount(parseFloat(e.target.value));
+
+  const handleDelete = () => deleteMyIsa();
+
+  const handleSave = (optionId: string) => {
+    createIsa({ savings: amount, isaOptionId: optionId });
   };
+
+  if (myIsa) {
+    return (
+      <StyledApp>
+        <Welcome title="ISA" />
+        <Card
+          title={'Your ISA details'}
+          footer={
+            <Button buttonType="primary" onClick={handleDelete}>
+              Remove
+            </Button>
+          }
+        >
+          <h3>Savings : {myIsa.savings}</h3>
+        </Card>
+      </StyledApp>
+    );
+  }
 
   return (
     <StyledApp>
       <Welcome title="ISA" />
-      {/*{isaOptions?.getAllIsaOptions.map((isaOpton) => {
-        return (
-          <Card
-            title={isaOpton.name}
-            footer={
-              <Button
-                onClick={() => {
-                  handleSelect(isaOpton.id);
-                }}
-                buttonType="primary"
-              >
-                Select
-              </Button>
-            }
-          >
-            <Input label="lumpsum" type="number" />
-          </Card>
-        );
-      })} */}
+      <div style={{ display: 'flex' }}>
+        <div>
+          <Input
+            label="Total Amount"
+            name="amount"
+            type="number"
+            onChange={handleChange}
+          />
+        </div>
+
+        {(isaOptions || []).map((isaOption) => {
+          return (
+            <Card
+              title={isaOption.name}
+              footer={
+                <Button
+                  onClick={() => {
+                    handleSave(isaOption.id);
+                  }}
+                  buttonType="primary"
+                >
+                  Save
+                </Button>
+              }
+            ></Card>
+          );
+        })}
+      </div>
     </StyledApp>
   );
 }

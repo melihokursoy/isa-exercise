@@ -1,7 +1,8 @@
 import { gqlClient, useGlobalSync, useQuery } from '@isa-exercise/state';
-import { Card, Welcome } from '@isa-exercise/ui';
+import { Button, Card, Welcome } from '@isa-exercise/ui';
 import { GetMyPensionDocument } from 'libs/shared/state/gql/graphql';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 const StyledApp = styled.div`
@@ -9,24 +10,35 @@ const StyledApp = styled.div`
 `;
 
 export function App() {
-  const [data, setData] = useState<any>();
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    gqlClient.request(GetMyPensionDocument).then((res) => {
-      setData(res.getMyPension);
-      console.log('res====>', res);
-    });
-  }, []);
+  const {
+    store: { auth, myPension },
+  } = useGlobalSync();
+
+  useEffect(() => {}, [myPension]);
 
   return (
     <StyledApp>
       <Welcome title="Pension" />
-      {/* {data?.getMyPension ? (
+      {myPension ? (
         <Card title="Your Pension">
-          <h3>Employer : {data?.getMyPension?.employer}</h3>
-          <h3>Savings : {data?.getMyPension?.savings}</h3>
+          <h3>Employer : {myPension?.employer}</h3>
+          <h3>Savings : {myPension?.savings}</h3>
         </Card>
-      ) : null} */}
+      ) : (
+        <Card title="Your Pension">
+          <h3>No Pension found 🥲</h3>
+          <Button
+            onClick={() => {
+              navigate('/isa');
+            }}
+            buttonType="primary"
+          >
+            How about ISA?
+          </Button>
+        </Card>
+      )}
     </StyledApp>
   );
 }

@@ -2,6 +2,7 @@ import styled, { css } from 'styled-components';
 
 export const StyledCard = styled.div`
   margin: 34px auto;
+  min-width:320px;
   width: fit-content;
   background-color: #fff;
   border: 1px solid #e52d90;
