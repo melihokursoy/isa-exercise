@@ -31,7 +31,7 @@ export function App() {
   const handleDelete = () => deleteMyIsa();
 
   const handleSave = (optionId: string) => {
-    createIsa({ savings: amount, isaOptionId: optionId });
+    createIsa({ createIsaInput: { savings: amount, isaOptionId: optionId } });
   };
 
   if (myIsa) {
