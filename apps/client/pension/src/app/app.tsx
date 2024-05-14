@@ -17,6 +17,11 @@ export function App() {
 
   useEffect(() => {getMyPensions()}, []);
 
+  if (!auth) {
+    navigate('/');
+  }
+
+
   return (
     <StyledApp>
       <Welcome title="Pension" />

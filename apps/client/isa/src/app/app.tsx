@@ -34,6 +34,11 @@ export function App() {
     createIsa({ createIsaInput: { savings: amount, isaOptionId: optionId } });
   };
 
+  if (!auth) {
+    navigate('/');
+  }
+
+
   if (auth && myIsa) {
     return (
       <StyledApp>

@@ -41,10 +41,6 @@ export function Home() {
     whoAmI();
   }, []);
 
-  if (!auth) {
-    navigate('/');
-  }
-
   useEffect(() => {}, [myPension]);
 
   return (
